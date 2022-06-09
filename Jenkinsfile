@@ -1,33 +1,30 @@
-def gv
 pipeline {
     agent any
     tools {
-        maven 'Maven'
+        maven "MAVEN"
+        jdk "JDK"
     }
     stages {
-        stage("init"){
+        stage('Initialize'){
+            steps{
+                echo "PATH = ${M2_HOME}/bin:${PATH}"
+                echo "M2_HOME = /opt/maven"
+            }
+        }
+        stage('Build') {
             steps {
-                script {
-                    gv.buildJar()
+                dir("/var/lib/jenkins/workspace/demopipelinetask/my-app") {
+                sh 'mvn -B -DskipTests clean package'
                 }
             }
         }
-
-        stage("build jar"){
-            steps {
-                script {
-                    gv.buildImage()
-                }
-            }
-        }
-
-        stage("deploy"){
-            steps {
-                script {
-                    gv.deployApp()
-                }
-            }
-        }
-
-    }
+     }
+    post {
+       always {
+          junit(
+        allowEmptyResults: true,
+        testResults: '*/test-reports/.xml'
+      )
+      }
+   } 
 }
