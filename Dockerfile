@@ -1,3 +1,15 @@
-FROM alpine:3.14
-RUN apk add --no-cache mysql-client
-ENTRYPOINT ["mysql"]
+ FROM node:latest
+
+ RUN mkdir -p /app
+ WORKDIR /app
+ #/usr/src/app
+ cOPY package.json /app
+ RUN npm install
+
+ COPY . /app
+
+ EXPOSE 7500
+
+ ENTRYPOINT ["node"]
+
+ CMD ["app.js"]
