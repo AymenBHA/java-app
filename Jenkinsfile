@@ -1,3 +1,4 @@
+def gv
 pipeline {
     agent any
     tools {
@@ -7,13 +8,34 @@ pipeline {
         stage('Initialize'){
             steps{
                 echo "hello"
+                script {
+                    gv = load "dcript.groovy"
+                }
             }
         }
-        stage('Build') {
+        stage('Build jar') {
             steps {
-                echo "inside master branch "
+                echo "build jar"
+                script {
+                    gv.buildJar()
+                }
+            }
+        }
+        stage('Build image') {
+            steps {
+                echo "build image ..."
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo "deploy app ..."
+                script {
+                    gv.deployApp()
+                }
             }
         }
      }
-
 }
