@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn -version'
+                echo "building the app ..."
             }
         }
      }
